@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BGPI | Student Routine</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+
+    <main class="container">
+
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon">B</div>
+                <span>BGPI<span class="highlight">.</span></span>
+            </div>
+
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#routine">Routine</a>
+                <a href="#about">About</a>
+            </div>
+
+          <div class="nav-actions">
+
+    <button class="theme-toggle" id="theme-toggle">
+        ☀️ Light Mode
+    </button>
+
+    <div class="semester-badge">
+        Semester 04
+    </div>
+
+</div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+
+            <div class="hero-content">
+                <span class="eyebrow">
+                    ✦ ACADEMIC SESSION 2026
+                </span>
+
+                <h1>
+                    Your Academic<br>
+                    Journey <span class="gradient-text">Starts Here.</span>
+                </h1>
+
+                <p>
+                    Stay organized, manage your classes and
+                    make every moment of your academic journey count.
+                </p>
+
+                <a href="#routine" class="primary-btn">
+                    Explore Routine ↗
+                </a>
+            </div>
+
+            <div class="hero-card">
+                <span class="card-label">YOUR DEPARTMENT</span>
+                <h2>Computer Technology</h2>
+                <div class="card-divider"></div>
+
+                <div class="info-row">
+                    <span>Institute</span>
+                    <strong>BGPI, Barguna</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Semester</span>
+                    <strong>4th</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Shift</span>
+                    <strong>1st Shift</strong>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <span class="stat-icon">📅</span>
+                <h2>05</h2>
+                <p>Class Days</p>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">⏰</span>
+                <h2>07</h2>
+                <p>Daily Periods</p>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">🎓</span>
+                <h2>04</h2>
+                <p>Semester</p>
+            </div>
+
+        </section>
+
+<!-- Today's Classes Dashboard -->
+
+<section class="today-section" id="today">
+
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">DAILY OVERVIEW</span>
+            <h2>Today's <span class="gradient-text">Classes.</span></h2>
+        </div>
+
+        <span class="live-badge" id="today-day">Loading...</span>
+    </div>
+
+    <div class="today-dashboard">
+
+        <div class="today-info glass-card">
+
+            <span class="card-label">YOUR NEXT CLASS</span>
+
+            <h2 id="countdown">Loading...</h2>
+
+            <p id="countdown-message">
+                Checking your schedule...
+            </p>
+
+            <div class="today-date" id="current-date">
+                Loading date...
+            </div>
+
+        </div>
+
+        <div class="today-info glass-card">
+
+            <span class="card-label">TODAY'S SCHEDULE</span>
+
+            <h2 id="class-count">00</h2>
+
+            <p>Scheduled class sessions</p>
+
+            <div class="today-date">
+                Computer Technology · 4th Semester
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="today-class-list" id="today-class-list">
+
+        <!-- JavaScript will add today's classes here -->
+
+    </div>
+
+</section>
+
+
+        <!-- Routine Section -->
+        <section class="routine-section" id="routine">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">YOUR WEEKLY PLAN</span>
+                    <h2>Class <span class="gradient-text">Routine.</span></h2>
+                </div>
+
+                <span class="live-badge">● 2026 ROUTINE</span>
+            </div>
+
+            <div class="
+<div class="table-wrapper">
+
+    <table class="routine-table">
+
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>1st<br><small>8:00–8:45</small></th>
+                <th>2nd<br><small>8:45–9:30</small></th>
+                <th>3rd<br><small>9:30–10:15</small></th>
+                <th>4th<br><small>10:15–11:00</small></th>
+                <th>5th<br><small>11:00–11:45</small></th>
+                <th>6th<br><small>11:45–12:30</small></th>
+                <th>7th<br><small>12:30–1:15</small></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <!-- Sunday -->
+            <tr data-day="Sunday">
+                <th>Sunday</th>
+
+                <td colspan="3">
+                    <div class="subject-card lab-purple">
+                        <span class="subject-code">28541</span>
+                        <strong>IAY</strong>
+                        <small>SOFT LAB-2</small>
+                        <span class="lab-tag">LAB SESSION</span>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card purple">
+                        <span class="subject-code">28542</span>
+                        <strong>MRA</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card orange">
+                        <span class="subject-code">29041</span>
+                        <strong>BR</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card blue">
+                        <span class="subject-code">26841</span>
+                        <strong>JR</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card pink">
+                        <span class="subject-code">25831</span>
+                        <strong>FH</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Monday -->
+            <tr data-day="Monday">
+                <th>Monday</th>
+
+                <td colspan="3">
+                    <div class="subject-card lab-green">
+                        <span class="subject-code">26841</span>
+                        <strong>JR</strong>
+                        <small>ET LAB</small>
+                        <span class="lab-tag">LAB SESSION</span>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card blue">
+                        <span class="subject-code">28541</span>
+                        <strong>IAY</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="free-card">FREE</div>
+                </td>
+
+                <td colspan="2">
+                    <div class="subject-card lab-purple">
+                        <span class="subject-code">28542</span>
+                        <strong>MRA</strong>
+                        <small>SOFT LAB-2</small>
+                        <span class="lab-tag">LAB SESSION</span>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Tuesday -->
+            <tr data-day="Tuesday">
+                <th>Tuesday</th>
+
+                <td colspan="3">
+                    <div class="subject-card lab-orange">
+                        <span class="subject-code">29041</span>
+                        <strong>BR</strong>
+                        <small>ENVT LAB</small>
+                        <span class="lab-tag">LAB SESSION</span>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card orange">
+                        <span class="subject-code">29041</span>
+                        <strong>BR</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td colspan="2">
+                    <div class="subject-card blue">
+                        <span class="subject-code">28543</span>
+                        <strong>JR</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card pink">
+                        <span class="subject-code">25831</span>
+                        <strong>FH</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Wednesday -->
+            <tr data-day="Wednesday">
+                <th>Wednesday</th>
+
+                <td>
+                    <div class="subject-card blue">
+                        <span class="subject-code">28541</span>
+                        <strong>IAY</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card green">
+                        <span class="subject-code">28543</span>
+                        <strong>JR</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card purple">
+                        <span class="subject-code">28544</span>
+                        <strong>IAY</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card purple">
+                        <span class="subject-code">28542</span>
+                        <strong>MRA</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td colspan="3">
+                    <div class="subject-card lab-blue">
+                        <span class="subject-code">28544</span>
+                        <strong>IAY</strong>
+                        <small>SOFT LAB-1</small>
+                        <span class="lab-tag">LAB SESSION</span>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Thursday -->
+            <tr data-day="Thursday">
+                <th>Thursday</th>
+
+                <td colspan="3">
+                    <div class="subject-card lab-purple">
+                        <span class="subject-code">28544</span>
+                        <strong>IAY</strong>
+                        <small>SOFT LAB-1</small>
+                        <span class="lab-tag">LAB SESSION</span>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="subject-card blue">
+                        <span class="subject-code">26841</span>
+                        <strong>JR</strong>
+                        <small>R-412</small>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="free-card">FREE</div>
+                </td>
+
+                <td colspan="2">
+                    <div class="subject-card lab-green">
+                        <span class="subject-code">28543</span>
+                        <strong>JR</strong>
+                        <small>HAD LAB</small>
+                        <span class="lab-tag">LAB SESSION</span>
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+">
+                <span>📚</span>
+                <h3>Your weekly timetable goes here.</h3>
+                <p>We'll add your complete Sunday–Thursday routine in the next step.</p>
+            </div>
+
+        </section>
+
+        <!-- Footer -->
+        <footer id="about">
+            <p>© 2026 BGPI Student Routine</p>
+            <p>Designed & Developed by <span class="highlight">Ealid.</span></p>
+        </footer>
+
+    </main>
+<script src="script.js"></script>
+</body>
+</html>
