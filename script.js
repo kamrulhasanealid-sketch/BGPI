@@ -268,3 +268,17 @@ themeToggle.addEventListener("click", function () {
     updateThemeButton();
 
 });
+const SUPABASE_URL = 'https://xojkjgvlmlclsazpelkx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_qPQaxDnXEiKJEhQnn20-Xg_JzlNzHPi';
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// test supabase connection
+async function testConnection() {
+  const { data, error } = await supabaseClient.from('tasks').select('*');
+  if (error) {
+    console.log('Error:', error.message);
+  } else {
+    console.log('Connected! Tasks:', data);
+  }
+}
+testConnection();
