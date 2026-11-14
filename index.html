@@ -18,18 +18,30 @@
 
 <body>
 
+
     <div class="background-glow glow-1"></div>
     <div class="background-glow glow-2"></div>
 
     <main class="container">
-
         <!-- Navbar -->
         <nav class="navbar">
             <div class="logo">
                 <div class="logo-icon">B</div>
                 <span>BGPI<span class="highlight">.</span></span>
             </div>
+          <section id="notices">
+  <h2>Notices</h2>
+  <div id="notice-list">Loading...</div>
 
+  <button id="admin-login-btn">Admin Login</button>
+  <button id="admin-logout-btn" style="display:none">Logout</button>
+
+  <div id="admin-panel" style="display:none">
+    <input id="notice-title" placeholder="Title">
+    <textarea id="notice-desc" placeholder="Description"></textarea>
+    <button id="add-notice-btn">Add Notice</button>
+  </div>
+</section>
             <div class="nav-links">
                 <a href="#" class="active">Home</a>
                 <a href="#routine">Routine</a>
@@ -411,13 +423,13 @@
     </table>
 
 </div>
-">
                 <span>📚</span>
                 <h3>Your weekly timetable goes here.</h3>
                 <p>We'll add your complete Sunday–Thursday routine in the next step.</p>
             </div>
 
         </section>
+  
 
         <!-- Footer -->
         <footer id="about">

@@ -268,18 +268,212 @@ themeToggle.addEventListener("click", function () {
     updateThemeButton();
 
 });
+// const SUPABASE_URL = 'https://xojkjgvlmlclsazpelkx.supabase.co';
+// const SUPABASE_KEY = 'sb_publishable_qPQaxDnXEiKJEhQnn20-Xg_JzlNzHPi';
+
+// const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// // test supabase connection
+// async function testConnection() {
+//   const { data, error } = await supabaseClient.from('tasks').select('*');
+//   if (error) {
+//     console.log('Error:', error.message);
+//   } else {
+//     console.log('Connected! Tasks:', data);
+//   }
+// }
+// testConnection();
 const SUPABASE_URL = 'https://xojkjgvlmlclsazpelkx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_qPQaxDnXEiKJEhQnn20-Xg_JzlNzHPi';
-
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// test supabase connection
-async function testConnection() {
-  const { data, error } = await supabaseClient.from('tasks').select('*');
+const noticeList = document.getElementById('notice-list');
+const adminPanel = document.getElementById('admin-panel');
+const loginBtn = document.getElementById('admin-login-btn');
+const logoutBtn = document.getElementById('admin-logout-btn');
+
+// Sobai dekhbe
+async function loadNotices() {
+  const { data, error } = await supabaseClient
+    .from('notices')
+    .select('*')
+    .order('created_at', { ascending: false });
+
   if (error) {
-    console.log('Error:', error.message);
-  } else {
-    console.log('Connected! Tasks:', data);
+    noticeList.textContent = 'Load korte problem hoyeche.';
+    console.log(error.message);
+    return;
   }
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  noticeList.innerHTML = '';
+
+  if (data.length === 0) {
+    noticeList.textContent = 'Ekhono kono notice nai.';
+    return;
+  }
+
+  data.forEach(item => {
+    const div = document.createElement('div');
+    const h3 = document.createElement('h3');
+    const p = document.createElement('p');
+    h3.textContent = item.title;
+    p.textContent = item.description || '';
+    div.append(h3, p);
+
+    if (session) {
+      const del = document.createElement('button');
+      del.textContent = 'Delete';
+      del.onclick = () => deleteNotice(item.id);
+      div.appendChild(del);
+    }
+    noticeList.appendChild(div);
+  });
 }
-testConnection();
+
+// Admin UI on/off
+async function updateAdminUI() {
+    document.getElementById('routine-admin').style.display = session ? 'block' : 'none';
+loadRoutine();
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  adminPanel.style.display = session ? 'block' : 'none';
+  logoutBtn.style.display = session ? 'inline-block' : 'none';
+  loginBtn.style.display = session ? 'none' : 'inline-block';
+  loadNotices();
+}
+
+// Login
+loginBtn.addEventListener('click', async () => {
+  const email = prompt('Admin email:');
+  const password = prompt('Password:');
+  if (!email || !password) return;
+
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error) alert('Login hoy nai: ' + error.message);
+  updateAdminUI();
+});
+
+// Logout
+logoutBtn.addEventListener('click', async () => {
+  await supabaseClient.auth.signOut();
+  updateAdminUI();
+});
+
+// Notice add
+document.getElementById('add-notice-btn').addEventListener('click', async () => {
+  const title = document.getElementById('notice-title').value.trim();
+  const description = document.getElementById('notice-desc').value.trim();
+  if (!title) return alert('Title dao');
+
+  const { error } = await supabaseClient.from('notices').insert({ title, description });
+  if (error) return alert('Save hoy nai: ' + error.message);
+
+  document.getElementById('notice-title').value = '';
+  document.getElementById('notice-desc').value = '';
+  loadNotices();
+});
+
+// Delete
+async function deleteNotice(id) {
+  if (!confirm('Delete korbe?')) return;
+  const { error } = await supabaseClient.from('notices').delete().eq('id', id);
+  if (error) alert(error.message);
+  loadNotices();
+}
+
+updateAdminUI();
+// new section for notices
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+
+async function loadRoutine() {
+  const { data, error } = await supabaseClient.from('routine').select('*');
+  if (error) return console.log(error.message);
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  const body = document.getElementById('routine-body');
+  body.innerHTML = '';
+
+  DAYS.forEach(day => {
+    const tr = document.createElement('tr');
+    tr.dataset.day = day;
+
+    const th = document.createElement('th');
+    th.textContent = day;
+    tr.appendChild(th);
+
+    const items = data.filter(r => r.day === day);
+    let p = 1;
+    while (p <= 7) {
+      const item = items.find(r => r.start_period === p);
+      const td = document.createElement('td');
+
+      if (item) {
+        td.colSpan = item.span;
+        td.innerHTML = `
+          <div class="subject-card">
+            <span class="subject-code"></span>
+            <strong></strong>
+            <small></small>
+            <em class="teacher"></em>
+          </div>`;
+        td.querySelector('.subject-code').textContent = item.code;
+        td.querySelector('strong').textContent = item.name;
+        td.querySelector('small').textContent = item.room || '';
+        td.querySelector('.teacher').textContent = item.teacher || '';
+
+        if (session) {
+          td.style.cursor = 'pointer';
+          td.onclick = () => fillForm(item);
+        }
+        p += item.span;
+      } else {
+        p += 1;
+      }
+      tr.appendChild(td);
+    }
+    body.appendChild(tr);
+  });
+}
+
+// Admin click korle form e data boshe jabe
+function fillForm(item) {
+  document.getElementById('r-day').value = item.day;
+  document.getElementById('r-period').value = item.start_period;
+  document.getElementById('r-span').value = item.span;
+  document.getElementById('r-code').value = item.code;
+  document.getElementById('r-name').value = item.name;
+  document.getElementById('r-teacher').value = item.teacher || '';
+  document.getElementById('r-room').value = item.room || '';
+}
+
+document.getElementById('r-save').addEventListener('click', async () => {
+  const row = {
+    day: document.getElementById('r-day').value,
+    start_period: Number(document.getElementById('r-period').value),
+    span: Number(document.getElementById('r-span').value) || 1,
+    code: document.getElementById('r-code').value.trim(),
+    name: document.getElementById('r-name').value.trim(),
+    teacher: document.getElementById('r-teacher').value.trim(),
+    room: document.getElementById('r-room').value.trim()
+  };
+  if (!row.start_period || !row.code || !row.name) return alert('Period, code, name dao');
+
+  const { error } = await supabaseClient
+    .from('routine')
+    .upsert(row, { onConflict: 'day,start_period' });
+  if (error) return alert('Save hoy nai: ' + error.message);
+  loadRoutine();
+});
+
+document.getElementById('r-delete').addEventListener('click', async () => {
+  const day = document.getElementById('r-day').value;
+  const start_period = Number(document.getElementById('r-period').value);
+  if (!confirm('Ei class delete korbe?')) return;
+
+  const { error } = await supabaseClient
+    .from('routine').delete().eq('day', day).eq('start_period', start_period);
+  if (error) return alert(error.message);
+  loadRoutine();
+});
+
+loadRoutine();
