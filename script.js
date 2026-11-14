@@ -1,4 +1,3 @@
-
 // ===== BGPI Student Routine =====
 
 // 1. Get HTML Elements
@@ -268,29 +267,24 @@ themeToggle.addEventListener("click", function () {
     updateThemeButton();
 
 });
-// const SUPABASE_URL = 'https://xojkjgvlmlclsazpelkx.supabase.co';
-// const SUPABASE_KEY = 'sb_publishable_qPQaxDnXEiKJEhQnn20-Xg_JzlNzHPi';
 
-// const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// =====================================================
+// ===== Supabase (Notices + Routine) ==================
+// =====================================================
 
-// // test supabase connection
-// async function testConnection() {
-//   const { data, error } = await supabaseClient.from('tasks').select('*');
-//   if (error) {
-//     console.log('Error:', error.message);
-//   } else {
-//     console.log('Connected! Tasks:', data);
-//   }
-// }
-// testConnection();
 const SUPABASE_URL = 'https://xojkjgvlmlclsazpelkx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_qPQaxDnXEiKJEhQnn20-Xg_JzlNzHPi';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
 const noticeList = document.getElementById('notice-list');
 const adminPanel = document.getElementById('admin-panel');
 const loginBtn = document.getElementById('admin-login-btn');
 const logoutBtn = document.getElementById('admin-logout-btn');
+const routineAdmin = document.getElementById('routine-admin');
+
+// ---------- Notices ----------
 
 // Sobai dekhbe
 async function loadNotices() {
@@ -331,34 +325,6 @@ async function loadNotices() {
   });
 }
 
-// Admin UI on/off
-async function updateAdminUI() {
-    document.getElementById('routine-admin').style.display = session ? 'block' : 'none';
-loadRoutine();
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  adminPanel.style.display = session ? 'block' : 'none';
-  logoutBtn.style.display = session ? 'inline-block' : 'none';
-  loginBtn.style.display = session ? 'none' : 'inline-block';
-  loadNotices();
-}
-
-// Login
-loginBtn.addEventListener('click', async () => {
-  const email = prompt('Admin email:');
-  const password = prompt('Password:');
-  if (!email || !password) return;
-
-  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error) alert('Login hoy nai: ' + error.message);
-  updateAdminUI();
-});
-
-// Logout
-logoutBtn.addEventListener('click', async () => {
-  await supabaseClient.auth.signOut();
-  updateAdminUI();
-});
-
 // Notice add
 document.getElementById('add-notice-btn').addEventListener('click', async () => {
   const title = document.getElementById('notice-title').value.trim();
@@ -373,7 +339,7 @@ document.getElementById('add-notice-btn').addEventListener('click', async () => 
   loadNotices();
 });
 
-// Delete
+// Notice delete
 async function deleteNotice(id) {
   if (!confirm('Delete korbe?')) return;
   const { error } = await supabaseClient.from('notices').delete().eq('id', id);
@@ -381,9 +347,36 @@ async function deleteNotice(id) {
   loadNotices();
 }
 
-updateAdminUI();
-// new section for notices
-const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+// ---------- Admin login / logout ----------
+
+async function updateAdminUI() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  adminPanel.style.display = session ? 'block' : 'none';
+  routineAdmin.style.display = session ? 'block' : 'none';
+  logoutBtn.style.display = session ? 'inline-block' : 'none';
+  loginBtn.style.display = session ? 'none' : 'inline-block';
+
+  loadNotices();
+  loadRoutine();
+}
+
+loginBtn.addEventListener('click', async () => {
+  const email = prompt('Admin email:');
+  const password = prompt('Password:');
+  if (!email || !password) return;
+
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error) alert('Login hoy nai: ' + error.message);
+  updateAdminUI();
+});
+
+logoutBtn.addEventListener('click', async () => {
+  await supabaseClient.auth.signOut();
+  updateAdminUI();
+});
+
+// ---------- Routine ----------
 
 async function loadRoutine() {
   const { data, error } = await supabaseClient.from('routine').select('*');
@@ -403,6 +396,7 @@ async function loadRoutine() {
 
     const items = data.filter(r => r.day === day);
     let p = 1;
+
     while (p <= 7) {
       const item = items.find(r => r.start_period === p);
       const td = document.createElement('td');
@@ -414,12 +408,14 @@ async function loadRoutine() {
             <span class="subject-code"></span>
             <strong></strong>
             <small></small>
-            <em class="teacher"></em>
+            ${item.is_lab ? '<span class="lab-tag">LAB SESSION</span>' : ''}
           </div>`;
+
+        const card = td.querySelector('.subject-card');
+        card.classList.add(item.is_lab ? 'lab-' + item.color : item.color);
         td.querySelector('.subject-code').textContent = item.code;
         td.querySelector('strong').textContent = item.name;
         td.querySelector('small').textContent = item.room || '';
-        td.querySelector('.teacher').textContent = item.teacher || '';
 
         if (session) {
           td.style.cursor = 'pointer';
@@ -427,10 +423,13 @@ async function loadRoutine() {
         }
         p += item.span;
       } else {
+        td.innerHTML = '<div class="free-card">FREE</div>';
         p += 1;
       }
+
       tr.appendChild(td);
     }
+
     body.appendChild(tr);
   });
 }
@@ -442,10 +441,12 @@ function fillForm(item) {
   document.getElementById('r-span').value = item.span;
   document.getElementById('r-code').value = item.code;
   document.getElementById('r-name').value = item.name;
-  document.getElementById('r-teacher').value = item.teacher || '';
   document.getElementById('r-room').value = item.room || '';
+  document.getElementById('r-color').value = item.color || 'purple';
+  document.getElementById('r-lab').checked = !!item.is_lab;
 }
 
+// Routine save
 document.getElementById('r-save').addEventListener('click', async () => {
   const row = {
     day: document.getElementById('r-day').value,
@@ -453,8 +454,9 @@ document.getElementById('r-save').addEventListener('click', async () => {
     span: Number(document.getElementById('r-span').value) || 1,
     code: document.getElementById('r-code').value.trim(),
     name: document.getElementById('r-name').value.trim(),
-    teacher: document.getElementById('r-teacher').value.trim(),
-    room: document.getElementById('r-room').value.trim()
+    room: document.getElementById('r-room').value.trim(),
+    color: document.getElementById('r-color').value,
+    is_lab: document.getElementById('r-lab').checked
   };
   if (!row.start_period || !row.code || !row.name) return alert('Period, code, name dao');
 
@@ -465,6 +467,7 @@ document.getElementById('r-save').addEventListener('click', async () => {
   loadRoutine();
 });
 
+// Routine delete
 document.getElementById('r-delete').addEventListener('click', async () => {
   const day = document.getElementById('r-day').value;
   const start_period = Number(document.getElementById('r-period').value);
@@ -476,4 +479,5 @@ document.getElementById('r-delete').addEventListener('click', async () => {
   loadRoutine();
 });
 
-loadRoutine();
+// Page load e shob load koro
+updateAdminUI();
