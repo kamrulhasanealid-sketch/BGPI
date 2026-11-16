@@ -1,0 +1,153 @@
+/* =====================================================
+   Attachment icons (PDF / image) + admin file list
+   ===================================================== */
+
+.file-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 4px 0 12px;
+}
+
+.file-tile {
+    --c: #8b7cf6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 92px;
+    padding: 10px 6px 8px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.2s, background 0.2s;
+}
+
+.file-tile.pdf { --c: #ff5a6a; }
+.file-tile.img { --c: #4f9dff; }
+
+.file-tile:hover {
+    transform: translateY(-3px);
+    border-color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+}
+
+.file-icon {
+    position: relative;
+    display: block;
+    width: 44px;
+    height: 52px;
+    color: var(--c);
+}
+
+.file-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.file-ext {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    text-align: center;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.file-name {
+    max-width: 100%;
+    margin-top: 7px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    opacity: 0.85;
+}
+
+.file-dl {
+    margin-top: 3px;
+    font-size: 0.64rem;
+    font-weight: 700;
+    color: var(--c);
+}
+
+/* Home page card click */
+.upcoming-exams .exam-card {
+    cursor: pointer;
+}
+
+/* ---------- Admin: current files list ---------- */
+
+.ex-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.ex-file-list:empty {
+    display: none;
+}
+
+.ex-file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.88rem;
+}
+
+.ex-file-item span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ex-file-item small {
+    opacity: 0.55;
+    margin-left: 6px;
+}
+
+.ex-file-item button {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 82, 99, 0.45);
+    background: rgba(255, 82, 99, 0.12);
+    color: #ff6b7a;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.ex-file-item button:hover {
+    background: rgba(255, 82, 99, 0.25);
+}
+
+.ex-field input[type="file"] {
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+/* ---------- Light theme ---------- */
+
+body.light-theme .file-tile {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(20, 20, 50, 0.12);
+}
+
+body.light-theme .ex-file-item {
+    background: rgba(20, 20, 50, 0.04);
+    border-color: rgba(20, 20, 50, 0.14);
+}

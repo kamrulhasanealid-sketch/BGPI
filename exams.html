@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exams | BGPI Student Routine</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="exams.css">
+    <link rel="stylesheet" href="attachments.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+
+    <main class="container">
+
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon">B</div>
+                <span>BGPI<span class="highlight">.</span></span>
+            </div>
+
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#routine">Routine</a>
+                <a href="index.html#notices">Notices</a>
+                <a href="exams.html" class="active">Exams</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle">☀️ Light Mode</button>
+                <div class="semester-badge">Semester 04</div>
+            </div>
+        </nav>
+
+        <!-- Heading -->
+        <section class="exams-hero">
+            <span class="eyebrow">TESTS &amp; DEADLINES</span>
+            <h1>Exams <span class="gradient-text">&amp; Submissions.</span></h1>
+            <p>Weekly class tests, job file submission dates and the mid-term exam routine, all in one place.</p>
+        </section>
+
+        <!-- Summary -->
+        <section class="exam-summary">
+
+            <div class="next-up" id="next-up">
+                <span class="card-label">NEXT UP</span>
+                <h2 id="next-title">Loading...</h2>
+                <p id="next-meta"></p>
+                <span class="exam-pill" id="next-pill" style="display:none"></span>
+            </div>
+
+            <div class="exam-stat type-class_test">
+                <span class="exam-stat-icon">📝</span>
+                <h3 id="stat-class_test">0</h3>
+                <p>Upcoming Class Tests</p>
+            </div>
+
+            <div class="exam-stat type-job_file">
+                <span class="exam-stat-icon">📁</span>
+                <h3 id="stat-job_file">0</h3>
+                <p>Job File Deadlines</p>
+            </div>
+
+            <div class="exam-stat type-mid_term">
+                <span class="exam-stat-icon">🎓</span>
+                <h3 id="stat-mid_term">0</h3>
+                <p>Mid-Term Papers</p>
+            </div>
+
+        </section>
+
+        <!-- Filters -->
+        <section class="exam-toolbar">
+            <div class="exam-tabs" id="exam-tabs">
+                <button class="exam-tab active" data-filter="all">All</button>
+                <button class="exam-tab" data-filter="class_test">Class Tests</button>
+                <button class="exam-tab" data-filter="job_file">Job Files</button>
+                <button class="exam-tab" data-filter="mid_term">Mid-Term</button>
+            </div>
+
+            <label class="exam-check">
+                <input type="checkbox" id="show-past">
+                <span>Show past</span>
+            </label>
+        </section>
+
+        <!-- Weekly class tests -->
+        <section class="exam-section" id="section-class_test">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">EVERY WEEK</span>
+                    <h2>Weekly <span class="gradient-text">Class Tests.</span></h2>
+                </div>
+            </div>
+            <div class="exam-grid" id="list-class_test"></div>
+        </section>
+
+        <!-- Job file -->
+        <section class="exam-section" id="section-job_file">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">DEADLINES</span>
+                    <h2>Job File <span class="gradient-text">Submission.</span></h2>
+                </div>
+            </div>
+            <div class="exam-grid" id="list-job_file"></div>
+        </section>
+
+        <!-- Mid term -->
+        <section class="exam-section" id="section-mid_term">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">MID-TERM</span>
+                    <h2>Mid-Term <span class="gradient-text">Exam Routine.</span></h2>
+                </div>
+            </div>
+            <div class="exam-grid" id="list-mid_term"></div>
+        </section>
+
+        <!-- Admin -->
+        <section class="exam-admin" id="exam-admin-section">
+
+            <div class="exam-admin-head">
+                <div>
+                    <span class="eyebrow">ADMIN</span>
+                    <h2>Manage <span class="gradient-text">Exams.</span></h2>
+                </div>
+
+                <div>
+                    <button id="admin-login-btn" class="ex-btn ex-ghost">🔐 Admin Login</button>
+                    <button id="admin-logout-btn" class="ex-btn ex-ghost" style="display:none">Logout</button>
+                </div>
+            </div>
+
+            <div id="exam-form" style="display:none">
+
+                <p class="exam-hint">Click any card above to edit it. Items can be added in advance and will appear for students on the day you choose.</p>
+
+                <input type="hidden" id="e-id">
+
+                <div class="ex-grid">
+
+                    <div class="ex-field">
+                        <label for="e-type">Type</label>
+                        <select id="e-type">
+                            <option value="class_test">Weekly Class Test</option>
+                            <option value="job_file">Job File Submission</option>
+                            <option value="mid_term">Mid-Term Exam</option>
+                        </select>
+                    </div>
+
+                    <div class="ex-field">
+                        <label for="e-title">Subject / Title</label>
+                        <input id="e-title" placeholder="e.g. Electronics Technology">
+                    </div>
+
+                    <div class="ex-field">
+                        <label for="e-code">Subject Code</label>
+                        <input id="e-code" placeholder="e.g. 26841">
+                    </div>
+
+                    <div class="ex-field">
+                        <label for="e-date">Date</label>
+                        <input id="e-date" type="date">
+                    </div>
+
+                    <div class="ex-field">
+                        <label for="e-start">Start Time</label>
+                        <input id="e-start" type="time">
+                    </div>
+
+                    <div class="ex-field">
+                        <label for="e-end">End Time</label>
+                        <input id="e-end" type="time">
+                    </div>
+
+                    <div class="ex-field">
+                        <label for="e-room">Room / Hall</label>
+                        <input id="e-room" placeholder="e.g. R-412">
+                    </div>
+
+                    <div class="ex-field">
+                        <label for="e-visible">Show to students</label>
+                        <select id="e-visible">
+                            <option value="now">Immediately</option>
+                            <option value="14">14 days before</option>
+                            <option value="7">7 days before</option>
+                            <option value="3">3 days before</option>
+                            <option value="1">1 day before</option>
+                        </select>
+                    </div>
+
+                    <div class="ex-field ex-full">
+                        <label for="e-details">Details (syllabus, instructions)</label>
+                        <textarea id="e-details" placeholder="e.g. Chapter 3 and 4. Bring calculator."></textarea>
+                    </div>
+
+                    <div class="ex-field ex-full">
+                        <label for="e-files">Attachments (PDF or image, max 10 MB each)</label>
+                        <input id="e-files" type="file" multiple accept=".pdf,image/png,image/jpeg,image/webp">
+                        <div id="e-file-list" class="ex-file-list"></div>
+                    </div>
+
+                </div>
+
+                <div class="ex-actions">
+                    <button id="e-save" class="ex-btn ex-primary">💾 Save</button>
+                    <button id="e-clear" class="ex-btn ex-ghost">Clear form</button>
+                    <button id="e-delete" class="ex-btn ex-danger">🗑 Delete</button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer>
+            <p>© 2026 BGPI Student Routine</p>
+            <p>Designed &amp; Developed by <span class="highlight">Ealid Rahman.</span></p>
+        </footer>
+
+    </main>
+
+    <script src="attachments.js"></script>
+    <script src="exams.js"></script>
+</body>
+</html>

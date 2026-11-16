@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="home-exams.css">
+    <link rel="stylesheet" href="attachments.css">
 </head>
 
 <body>
@@ -31,6 +33,7 @@
             <div class="nav-links">
                 <a href="#" class="active">Home</a>
                 <a href="#routine">Routine</a>
+                <a href="exams.html">Exams</a>
                 <a href="#about">About</a>
             </div>
 
@@ -113,6 +116,8 @@
             </div>
 
         </section>
+        <!-- Coming Up Soon (exams) -->
+        <section class="upcoming-exams" id="upcoming-exams" style="display:none"></section>
 
         <!-- Today's Classes Dashboard -->
         <section class="today-section" id="today">
@@ -244,6 +249,8 @@
 
     </main>
 
-    <script src="script.js"></script>
+   <script src="script.js"></script>
+    <script src="attachments.js"></script>
+    <script src="home-exams.js"></script>
 </body>
 </html>
