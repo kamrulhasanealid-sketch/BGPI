@@ -91,7 +91,17 @@
     const files = buildAttachments(item.attachments);
     if (files) body.appendChild(files);
 
-    body.appendChild(el('span', 'exam-pill', countdownText(days)));
+    const foot = el('div', 'exam-foot');
+    if (item.is_cancelled) {
+      card.classList.add('cancelled');
+      foot.appendChild(el('span', 'exam-pill cancel-pill', '❌ Cancelled'));
+    } else {
+      foot.appendChild(el('span', 'exam-pill', countdownText(days)));
+    }
+    if (item.rescheduled_from) {
+      foot.appendChild(el('span', 'exam-pill resched-pill', '🔁 Rescheduled'));
+    }
+    body.appendChild(foot);
 
     card.append(box, body);
     return card;

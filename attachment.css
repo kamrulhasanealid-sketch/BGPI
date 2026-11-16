@@ -140,6 +140,104 @@
     cursor: pointer;
 }
 
+/* ---------- Edit / Delete buttons on cards (admin) ---------- */
+
+.card-tools {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.card-tool-btn {
+    padding: 7px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.card-tool-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.card-tool-btn.danger {
+    border-color: rgba(255, 82, 99, 0.45);
+    background: rgba(255, 82, 99, 0.12);
+    color: #ff6b7a;
+}
+
+.card-tool-btn.danger:hover {
+    background: rgba(255, 82, 99, 0.25);
+}
+
+/* ---------- Editing banner + cancel checkbox ---------- */
+
+.edit-banner {
+    margin: 0 0 18px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(139, 124, 246, 0.45);
+    background: rgba(139, 124, 246, 0.14);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.ex-check-row {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    opacity: 1 !important;
+    cursor: pointer;
+}
+
+.ex-check-row input {
+    width: 18px !important;
+    height: 18px;
+    accent-color: #ff5a6a;
+    flex-shrink: 0;
+}
+
+/* ---------- Cancelled / Rescheduled status ---------- */
+
+.exam-card.cancelled {
+    opacity: 0.6;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+.exam-card.cancelled h3 {
+    text-decoration: line-through;
+}
+
+.exam-card .cancel-pill {
+    background: rgba(255, 82, 99, 0.2) !important;
+    color: #ff7a89 !important;
+}
+
+.exam-card .resched-pill {
+    background: rgba(139, 124, 246, 0.22) !important;
+    color: #b6acff !important;
+}
+
+/* Home page card footer */
+.upcoming-exams .exam-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 /* ---------- Light theme ---------- */
 
 body.light-theme .file-tile {

@@ -129,6 +129,7 @@ function buildCard(item) {
   else if (days <= 1) card.classList.add('urgent');
   else if (days <= 3) card.classList.add('soon');
   if (scheduled) card.classList.add('scheduled');
+  if (item.is_cancelled) card.classList.add('cancelled');
 
   // date box
   const d = parseDate(item.exam_date);
@@ -164,11 +165,41 @@ function buildCard(item) {
   if (files) body.appendChild(files);
 
   const foot = el('div', 'exam-foot');
-  foot.appendChild(el('span', 'exam-pill', countdownText(days)));
+  if (item.is_cancelled) {
+    foot.appendChild(el('span', 'exam-pill cancel-pill', '❌ Cancelled'));
+  } else {
+    foot.appendChild(el('span', 'exam-pill', countdownText(days)));
+  }
+  if (item.rescheduled_from) {
+    foot.appendChild(el('span', 'exam-pill resched-pill', '🔁 Rescheduled from ' + fmtDate(item.rescheduled_from)));
+  }
   if (scheduled) {
     foot.appendChild(el('span', 'exam-pill hidden-pill', '🔒 Hidden until ' + fmtDate(item.show_from)));
   }
   body.appendChild(foot);
+
+  // Admin er jonno Edit / Delete button
+  if (isAdmin) {
+    const tools = el('div', 'card-tools');
+
+    const editBtn = el('button', 'card-tool-btn', '✏️ Edit');
+    editBtn.type = 'button';
+    editBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      fillForm(item);
+    });
+
+    const delBtn = el('button', 'card-tool-btn danger', '🗑 Delete');
+    delBtn.type = 'button';
+    delBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      fillForm(item);          // form e oi item load kore
+      $('e-delete').click();   // confirm diye delete korbe
+    });
+
+    tools.append(editBtn, delBtn);
+    body.appendChild(tools);
+  }
 
   card.append(box, body);
 
@@ -190,7 +221,7 @@ function render() {
 
   // Summary uses only what students can see
   const upcomingPublic = allExams.filter(
-    x => daysFromToday(x.exam_date) >= 0 && x.show_from <= today
+    x => daysFromToday(x.exam_date) >= 0 && x.show_from <= today && !x.is_cancelled
   );
 
   Object.keys(TYPES).forEach(type => {
@@ -327,6 +358,9 @@ function fillForm(item) {
   const diff = Math.round((parseDate(item.exam_date) - parseDate(item.show_from)) / 86400000);
   $('e-visible').value = ['14', '7', '3', '1'].includes(String(diff)) ? String(diff) : 'now';
 
+  $('e-cancelled').checked = !!item.is_cancelled;
+  showEditBanner(item);
+
   formFiles = Array.isArray(item.attachments) ? [...item.attachments] : [];
   pendingRemove = [];
   $('e-files').value = '';
@@ -334,6 +368,17 @@ function fillForm(item) {
 
   $('e-save').textContent = '💾 Update';
   $('exam-admin-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showEditBanner(item) {
+  const banner = $('edit-banner');
+  if (!item) {
+    banner.style.display = 'none';
+    banner.textContent = '';
+    return;
+  }
+  banner.textContent = '✏️ Editing: ' + item.title + ' (' + fmtDate(item.exam_date) + ')';
+  banner.style.display = 'block';
 }
 
 function clearForm() {
@@ -346,6 +391,8 @@ function clearForm() {
   pendingRemove = [];
   renderFormFiles();
   $('e-save').textContent = '💾 Save';
+  $('e-cancelled').checked = false;
+  showEditBanner(null);
 }
 
 $('e-clear').addEventListener('click', clearForm);
@@ -396,6 +443,14 @@ $('e-save').addEventListener('click', async () => {
     }
 
     // 2) Database e save
+    // Date bodlale "Rescheduled from ..." mone rakhbe (prothom original date)
+    const original = id ? allExams.find(x => x.id === id) : null;
+    let rescheduled_from = original ? original.rescheduled_from : null;
+    if (original && original.exam_date !== exam_date) {
+      rescheduled_from = original.rescheduled_from || original.exam_date;
+    }
+    if (rescheduled_from === exam_date) rescheduled_from = null;
+
     const row = {
       type,
       title,
@@ -406,7 +461,9 @@ $('e-save').addEventListener('click', async () => {
       room: $('e-room').value.trim() || null,
       details: $('e-details').value.trim() || null,
       show_from,
-      attachments: [...formFiles, ...uploaded]
+      attachments: [...formFiles, ...uploaded],
+      is_cancelled: $('e-cancelled').checked,
+      rescheduled_from
     };
 
     const query = id

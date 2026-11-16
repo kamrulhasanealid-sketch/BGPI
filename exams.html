@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="exams.css">
-    <link rel="stylesheet" href="attachments.css">
+    <link rel="stylesheet" href="attachment.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -148,6 +148,7 @@
                 <p class="exam-hint">Click any card above to edit it. Items can be added in advance and will appear for students on the day you choose.</p>
 
                 <input type="hidden" id="e-id">
+                <div id="edit-banner" class="edit-banner" style="display:none"></div>
 
                 <div class="ex-grid">
 
@@ -212,6 +213,13 @@
                         <div id="e-file-list" class="ex-file-list"></div>
                     </div>
 
+                    <div class="ex-field ex-full">
+                        <label class="ex-check-row" for="e-cancelled">
+                            <input id="e-cancelled" type="checkbox">
+                            <span>Mark as cancelled / postponed (students will see a "Cancelled" badge)</span>
+                        </label>
+                    </div>
+
                 </div>
 
                 <div class="ex-actions">
@@ -231,7 +239,7 @@
 
     </main>
 
-    <script src="attachments.js"></script>
+    <script src="attachment.js"></script>
     <script src="exams.js"></script>
 </body>
 </html>
