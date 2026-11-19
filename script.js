@@ -1,5 +1,17 @@
 // ===== BGPI Student Routine =====
 
+// ===== Subject code -> Subject name =====
+// Prottek "" er moddhe subject er name likhun, jemon "28541": "Operating System"
+const SUBJECT_NAMES = {
+    "28541": "JAVA PROGRAMMING",
+    "28542": "DATA STRUCTURES & ALGORITHM",
+    "28543": "COMPUTER PERIPHERALS",
+    "28544": "WEB DESIGN & DEVELOPMENT",
+    "29041": "ENVIRONMENTAL STUDIES",
+    "26841": "DIGITAL ELECTRONICS-2",
+    "25831": "BUSINESS COMMUNICATION",
+};
+
 // 1. Get HTML Elements
 
 const todayDay = document.getElementById("today-day");
@@ -408,6 +420,7 @@ async function loadRoutine() {
             <span class="subject-code"></span>
             <strong></strong>
             <small></small>
+            <span class="subject-full"></span>
             ${item.is_lab ? '<span class="lab-tag">LAB SESSION</span>' : ''}
           </div>`;
 
@@ -416,6 +429,7 @@ async function loadRoutine() {
         td.querySelector('.subject-code').textContent = item.code;
         td.querySelector('strong').textContent = item.name;
         td.querySelector('small').textContent = item.room || '';
+        td.querySelector('.subject-full').textContent = SUBJECT_NAMES[item.code] || '';
 
         if (session) {
           td.style.cursor = 'pointer';
