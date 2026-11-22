@@ -247,34 +247,28 @@
         const files = document.createElement('div');
         files.className = 'hw-files';
 
-        // Video: shudhu khulle load hobe (page fast thakbe)
+        // Video: YouTube link e notun tab e (ba YouTube app e) khulbe
         const vid = item.video_url ? youtubeId(item.video_url) : null;
         if (vid) {
-            const wrap = document.createElement('div');
-            wrap.className = 'hw-video';
-            files.appendChild(wrap);
-
-            let loaded = false;
-            details.addEventListener('toggle', () => {
-                if (details.open && !loaded) {
-                    loaded = true;
-                    const iframe = document.createElement('iframe');
-                    iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid;
-                    iframe.title = item.title;
-                    iframe.allow = 'accelerometer; encrypted-media; picture-in-picture';
-                    iframe.allowFullscreen = true;
-                    wrap.appendChild(iframe);
-                }
-            });
+            const v = document.createElement('a');
+            v.className = 'hw-btn hw-video-btn';
+            v.href = 'https://www.youtube.com/watch?v=' + vid;
+            v.target = '_blank';
+            v.rel = 'noopener noreferrer';
+            v.textContent = '▶ Watch Video';
+            files.appendChild(v);
         }
 
-        if (isHttps(item.pdf_url)) {
+        // PDF: click korle shorashori download hobe
+        if (item.pdf_path) {
+            const fileName = (item.title || 'homework').replace(/[^\w\- ]+/g, '').trim() + '.pdf';
+            const dl = sb.storage.from(BUCKET).getPublicUrl(item.pdf_path, { download: fileName });
+
             const a = document.createElement('a');
             a.className = 'hw-btn hw-pdf-btn';
-            a.href = item.pdf_url;
-            a.target = '_blank';
+            a.href = dl.data.publicUrl;
             a.rel = 'noopener noreferrer';
-            a.textContent = '📄 Open PDF';
+            a.textContent = '⬇ Download PDF';
             files.appendChild(a);
         }
 
