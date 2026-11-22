@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BGPI | Homework</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="homework.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+
+    <main class="container">
+
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon">B</div>
+                <span>BGPI<span class="highlight">.</span></span>
+            </div>
+
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#routine">Routine</a>
+                <a href="homework.html" class="active">Homework</a>
+                <a href="exams.html">Exams</a>
+                <a href="index.html#about">About</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle">☀️ Light Mode</button>
+                <div class="semester-badge">Semester 04</div>
+            </div>
+        </nav>
+
+        <!-- Heading -->
+        <section class="hw-section">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">STUDY CORNER</span>
+                    <h2>Home<span class="gradient-text">work.</span></h2>
+                </div>
+                <span class="live-badge" id="hw-total">Loading...</span>
+            </div>
+
+            <!-- Tabs -->
+            <div class="hw-tabs" role="tablist">
+                <button class="hw-tab active" data-tab="daily" role="tab">
+                    Daily Sessional Homework <span class="hw-count" id="count-daily">0</span>
+                </button>
+                <button class="hw-tab" data-tab="job" role="tab">
+                    Job Homework <span class="hw-count" id="count-job">0</span>
+                </button>
+            </div>
+
+            <!-- Homework list -->
+            <div class="hw-list" id="hw-list"></div>
+
+            <!-- Admin area -->
+            <div class="hw-admin-bar">
+                <button id="hw-login-btn" class="hw-btn">Admin Login</button>
+                <button id="hw-logout-btn" class="hw-btn" style="display:none">Logout</button>
+            </div>
+
+            <form id="hw-form" class="glass-card hw-form" style="display:none">
+                <h3 id="hw-form-title">Add Homework</h3>
+
+                <div class="hw-form-grid">
+                    <label>
+                        Section
+                        <select id="hw-category">
+                            <option value="daily">Daily Sessional Homework</option>
+                            <option value="job">Job Homework</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Serial No.
+                        <input id="hw-serial" type="number" min="1" required>
+                    </label>
+
+                    <label class="hw-wide">
+                        Subject (jemon: 28541 - Operating System)
+                        <input id="hw-subject" type="text" list="hw-subject-list" maxlength="120" required autocomplete="off">
+                        <datalist id="hw-subject-list"></datalist>
+                    </label>
+
+                    <label class="hw-wide">
+                        Title (YouTube video title er moto)
+                        <input id="hw-title" type="text" maxlength="200" required>
+                    </label>
+
+                    <label class="hw-wide">
+                        Description (optional)
+                        <textarea id="hw-desc" rows="3" maxlength="1000"></textarea>
+                    </label>
+
+                    <label class="hw-wide">
+                        YouTube video link (optional)
+                        <input id="hw-video" type="url" placeholder="https://www.youtube.com/watch?v=...">
+                    </label>
+
+                    <label>
+                        PDF file (optional, max 20 MB)
+                        <input id="hw-pdf" type="file" accept="application/pdf">
+                    </label>
+
+                    <label>
+                        Submission date
+                        <input id="hw-due" type="date">
+                    </label>
+
+                    <label class="hw-wide hw-check" id="hw-remove-pdf-wrap" style="display:none">
+                        <input id="hw-remove-pdf" type="checkbox"> Ager PDF ta remove korbo
+                    </label>
+                </div>
+
+                <div class="hw-form-actions">
+                    <button type="submit" id="hw-save" class="primary-btn">Save</button>
+                    <button type="button" id="hw-cancel" class="hw-btn" style="display:none">Cancel edit</button>
+                </div>
+            </form>
+
+        </section>
+
+        <footer id="about">
+            <p>© 2026 BGPI Student Routine</p>
+            <p>Designed &amp; Developed by <span class="highlight">Ealid Rahman.</span></p>
+        </footer>
+
+    </main>
+
+    <script src="homework.js"></script>
+</body>
+</html>
