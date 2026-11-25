@@ -21,6 +21,13 @@ const TYPE_ICON = {
   mid_term: '🎓'
 };
 
+// Card background photo (images folder e rakhun). Photo na chaile '' likhun
+const TYPE_IMAGES = {
+  class_test: 'images/class-test-bg.jpg',
+  job_file: 'images/job-file-bg.jpg',
+  mid_term: 'images/mid-term-bg.jpg'
+};
+
 let allExams = [];
 let isAdmin = false;
 let activeFilter = 'all';
@@ -130,6 +137,12 @@ function buildCard(item) {
   else if (days <= 3) card.classList.add('soon');
   if (scheduled) card.classList.add('scheduled');
   if (item.is_cancelled) card.classList.add('cancelled');
+
+    const bg = TYPE_IMAGES[item.type];
+  if (bg) {
+    card.classList.add('has-bg');
+    card.style.setProperty('--ex-bg', 'url("' + bg + '")');
+  }
 
   // date box
   const d = parseDate(item.exam_date);

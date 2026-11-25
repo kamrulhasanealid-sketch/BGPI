@@ -13,6 +13,13 @@
     job_file: { label: 'Job File Submission', icon: '📁' },
     mid_term: { label: 'Mid-Term Exam', icon: '🎓' }
   };
+  
+  // Card background photo (exams.js er moto-i same path din)
+  const TYPE_IMAGES = {
+    class_test: 'image/exam.jpg',
+    job_file: 'image/job.jpg',
+    mid_term: 'image/exam.jpg'
+  };
 
   function pad(n) { return String(n).padStart(2, '0'); }
   function toDateStr(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
@@ -61,6 +68,12 @@
     });
     if (days <= 1) card.classList.add('urgent');
     else card.classList.add('soon');
+    
+    const bg = TYPE_IMAGES[item.type];
+    if (bg) {
+      card.classList.add('has-bg');
+      card.style.setProperty('--ex-bg', 'url("' + bg + '")');
+    }
 
     const d = parseDate(item.exam_date);
     const box = el('div', 'exam-date-box');

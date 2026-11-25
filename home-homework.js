@@ -17,6 +17,15 @@
     const KIND = { daily: 'Daily Sessional', job: 'Job Homework' };
     const WINDOW_DAYS = 5;
 
+    // ===== Card background picture =====
+    // Image gulo repo te "images" folder e rakhun.
+    // daily = Daily Sessional Homework card, job = Job Homework card
+    // Photo na chaile "" likhe din (tahole simple card thakbe)
+    const CATEGORY_IMAGES = {
+        daily: "image/note.webp",
+        job: "image/job.jpg"
+    };
+
     function pad(n) {
         return String(n).padStart(2, '0');
     }
@@ -85,6 +94,12 @@
             const a = document.createElement('a');
             a.className = 'hw-soon-card glass-card';
             a.href = 'homework.html#' + (item.category === 'job' ? 'job' : 'daily');
+
+            const bg = CATEGORY_IMAGES[item.category === 'job' ? 'job' : 'daily'];
+            if (bg) {
+                a.classList.add('has-bg');
+                a.style.setProperty('--hw-bg', 'url("' + bg + '")');
+            }
 
             const kind = document.createElement('span');
             kind.className = 'hw-kind';

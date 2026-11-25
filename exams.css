@@ -522,3 +522,20 @@ body.light-theme .exam-empty {
         flex: 1;
     }
 }
+/* ===== Card background picture ===== */
+body .exam-card.has-bg {
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, .4) 0%, rgba(0, 0, 0, .85) 100%),
+        var(--ex-bg) center / cover no-repeat;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+}
+
+body .exam-card.has-bg .exam-date-box {
+    background: rgba(0, 0, 0, .45);
+}
+
+body .exam-card.has-bg .exam-pill:not(.hidden-pill) {
+    background: rgba(0, 0, 0, .55) !important;
+    text-shadow: none;
+}
